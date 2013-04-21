@@ -1,0 +1,26 @@
+name: ReactionRewards
+main: ro.raizen.src.reactionrewards.ReactionRewards
+version: 1.0
+description: Reaction test and trivia with rewards !
+commands:
+    reactionrewards:
+       description: ReactionRewards main command
+    rr:
+       description: Alias for /reactionrewards
+permissions:
+    reactionrewards.*:
+        description: Gives access to all /rr commands
+        children:
+            reactionrewards.play: true
+            reactionrewards.leaderboard: true
+            reactionrewards.reload: true
+        default: op
+    reactionrewards.play:
+        description: Permission to play
+        default: true
+    reactionrewards.leaderboard:
+        description: Can use /rr leaderboard
+        default: true
+    reactionrewards.reload:
+        description: Can use /rr reload
+        default: op

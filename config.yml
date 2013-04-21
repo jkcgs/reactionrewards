@@ -1,0 +1,18 @@
+#List of question types to choose from: trivia (Trivia questions), alpha (Random alhpanumeric string), math (Math questions). 
+#At least one type of question must be specified
+questionTypes:
+  - trivia
+  - alpha
+  - math
+  
+#Length of the alphanumeric string generated (default: 10)
+alphaLength: 10
+
+#Maximum length of the numbers generated for math questions (default: 4)
+mathMaxLength: 4
+
+#How often will a new question be generated in seconds (default: 300)
+generatorPeriod: 300
+
+#How many people to show in the leaderboards (default 5)
+leaderboardLimit: 5

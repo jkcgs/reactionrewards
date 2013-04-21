@@ -1,0 +1,178 @@
+#ItemName:                    -> The item name being shown in the game
+#    itemId: id               -> The Minecraft Item Id (you can use damage value for different types of wood, wool, etc)
+#    maxAmount: amount        -> The maximum amount of items rewarded (chosen randomly from 1 to maxAmount)
+#
+# You can use "money" as ItemName, and instead of an item, the player will be rewarded with currency in your economy plugin
+
+#Grass
+Grass:
+    itemId: 2
+    maxAmount: 64
+#Jungle Wood
+Jungle Wood:
+    itemId: "17:3"
+    maxAmount: 32
+#Spruce Wood
+Spruce Wood:
+    itemId: "17:1"
+    maxAmount: 32
+#Birch Wood
+Birch Wood:
+    itemId: "17:2"
+    maxAmount: 32
+#Oak Wood
+Oak Wood:
+    itemId: 17
+    maxAmount: 32
+#Sand
+Sand:
+    itemId: 12
+    maxAmount: 64
+#Gravel
+Gravel:
+    itemId: 13
+    maxAmount: 64
+#Stone
+Stone:
+    itemId: 1
+    maxAmount: 64
+#Cobblestone
+Cobblestone:
+    itemId: 4
+    maxAmount: 64
+#Glass
+Glass:
+    itemId: 20
+    maxAmount: 32
+#Sandstone
+Sandstone:
+    itemId: 24
+    maxAmount: 32
+#Sticky Piston
+Sticky Piston:
+    itemId: 29
+    maxAmount: 8
+#Piston
+Piston:
+    itemId: 33
+    maxAmount: 12
+#Wool
+White Wool:
+    itemId: 35
+    maxAmount: 32
+#Block of Gold
+Gold Block:
+    itemId: 41
+    maxAmount: 1
+#Block of Iron
+Iron Block:
+    itemId: 42
+    maxAmount: 2
+#Brick
+Brick:
+    itemId: 45
+    maxAmount: 16
+#Obsidian
+Obsidian:
+    itemId: 49
+    maxAmount: 10
+#Chest
+Chest:
+    itemId: 54
+    maxAmount: 8
+#Bookcase
+Bookcase:
+    itemId: 47
+    maxAmount: 5
+#Ice
+Ice:
+    itemId: 79
+    maxAmount: 10
+#Glowstone
+Glowstone:
+    itemId: 89
+    maxAmount: 32
+#Stonebricks
+Stonebricks:
+    itemId: 98
+    maxAmount: 32
+#Redstone Lamp
+Redstone Lamp:
+    itemId: 123
+    maxAmount: 8
+#Block of Emerald
+Block of Emerald:
+    itemId: 133
+    maxAmount: 1
+#Anvil
+Anvil:
+    itemId: 145
+    maxamount: 1
+#Iron Ingot
+Iron Ingot:
+    itemId: 265
+    maxAmount: 12
+#Gold Ingot
+Gold Ingot:
+    itemId: 266
+    maxAmount: 8
+#Diamond
+Diamond:
+    itemId: 264
+    maxAmount: 3
+#Emerald
+Emerald:
+    itemId: 388
+    maxAmount: 3
+#Coal
+Coal:
+    itemId: 263
+    maxAmount: 16
+#Sugar Cane
+Sugar Cane:
+    itemId: 338
+    maxAmount: 8
+#Raw Fish
+Raw Fish:
+    itemId: 349
+    maxamount: 8
+#Leather
+Leather:
+    itemId: 334
+    maxAmount: 8
+#Cake
+Cake:
+    itemId: 354
+    maxAmount: 1
+#Bone
+Bone:
+    itemId: 352
+    maxAmount: 8
+#Firework Rocket
+Firework Rocket:
+    itemId: 401
+    maxAmount: 16
+#Music Disk
+Music Disk:
+    itemId: 2256
+    maxAmount: 1
+#Music Disk
+Music Disk:
+    itemId: 2257
+    maxAmount: 1
+#Music Disk
+Music Disk:
+    itemId: 2260
+    maxAmount: 1
+#Music Disk
+Music Disk:
+    itemId: 2262
+    maxAmount: 1
+#Music Disk
+Music Disk:
+    itemId: 2265
+    maxAmount: 1
+#Music Disk
+Music Disk:
+    itemId: 2267
+    maxAmount: 1
