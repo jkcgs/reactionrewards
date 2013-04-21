@@ -23,6 +23,16 @@ public class ChatListener implements Listener {
 			if(!plugin.getQuestionHandler().isExpired()) {
 				//If the answer is correct
 				if( isCorrect( e.getMessage() ) ) {
+					String rewarded;
+					//Handle item and currency rewards differently
+					if(!plugin.getQuestionHandler().getReward().equalsIgnoreCase("money")) {
+						rewarded = plugin.getQuestionHandler().getReward();
+						rewarded = plugin.getQuestionHandler().getRewardAmount() + " " + rewarded; 
+					}
+					else {
+						rewarded = ReactionRewards.getEconomy().format((double) plugin.getQuestionHandler().getRewardAmount());
+					}
+					
 					int elapsedTime = (int) (plugin.getQuestionHandler().getTime()) / 1000;
 					//Handle item reward
 					if(!plugin.getQuestionHandler().getReward().equalsIgnoreCase("money")) {
@@ -37,15 +47,18 @@ public class ChatListener implements Listener {
 							ItemStack reward = new ItemStack(itemId, plugin.getQuestionHandler().getRewardAmount(), damageValue);
 						    e.getPlayer().getInventory().addItem(reward);
 						    plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastWin"), e.getPlayer().getName(), elapsedTime));
+						    e.getPlayer().sendMessage(String.format(plugin.getLang("sendWin"), rewarded));
 						} else {
 							itemId = Integer.parseInt(item);
 							ItemStack reward = new ItemStack(itemId, plugin.getQuestionHandler().getRewardAmount());
 						    e.getPlayer().getInventory().addItem(reward);
 						    plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastWin"), e.getPlayer().getName(), elapsedTime));
+						    e.getPlayer().sendMessage(String.format(plugin.getLang("sendWin"), rewarded));
 						}
 					} else { //handle money reward
 						ReactionRewards.getEconomy().depositPlayer(e.getPlayer().getName(), (double) plugin.getQuestionHandler().getRewardAmount());
 						plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastWin"), e.getPlayer().getName(), elapsedTime));
+						e.getPlayer().sendMessage(String.format(plugin.getLang("sendWin"), rewarded));
 					}
 					
 					//Add/update player entry in db with +1 wins
