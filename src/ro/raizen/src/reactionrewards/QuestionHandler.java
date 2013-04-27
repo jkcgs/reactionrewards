@@ -97,7 +97,7 @@ public class QuestionHandler {
 				question = one + " - " + Math.abs(two);
 			}
 			else {
-				question = one + " - " + two;
+				question = one + " + " + two;
 			}
 			answers = new String[1];
 			answers[0] = Integer.toString(one + two);

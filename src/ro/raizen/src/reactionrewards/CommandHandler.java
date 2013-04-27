@@ -53,6 +53,34 @@ public class CommandHandler implements CommandExecutor {
 					}
 					
 					break;
+				case "stop":
+					if(sender.hasPermission("reactionrewards.stop")) {
+						if(plugin.getCfg("main").getBoolean("enabled") == false) {
+							sender.sendMessage(plugin.getLang("notRunning"));
+						} else {
+							plugin.getCfg("main").set("enabled", false);
+							plugin.saveCfg("main");
+							plugin.stopGen();
+							sender.sendMessage(plugin.getLang("genStopped"));
+						}
+					} else {
+						sender.sendMessage(plugin.getLang("noPermission"));
+					}
+					break;
+				case "start":
+					if(sender.hasPermission("reactionrewards.start")) {
+						if(plugin.getCfg("main").getBoolean("enabled") == true) {
+							sender.sendMessage(plugin.getLang("alreadyRunning"));
+						} else {
+							plugin.getCfg("main").set("enabled", true);
+							plugin.saveCfg("main");
+							plugin.startGen();
+							sender.sendMessage(plugin.getLang("genStarted"));
+						}
+					} else {
+						sender.sendMessage(plugin.getLang("noPermission"));
+					}
+					break;
 				case "reload": 
 					
 					if(sender.hasPermission("reactionrewards.reload")) {

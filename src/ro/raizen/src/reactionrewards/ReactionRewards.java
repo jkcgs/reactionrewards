@@ -63,15 +63,10 @@ public class ReactionRewards extends JavaPlugin {
 			initConfigs();
 			
 			question = new QuestionHandler(this);
-			
-			int period;
-			if(getCfg("main").getInt("generatorPeriod") > 0)
-				period = getCfg("main").getInt("generatorPeriod");
-			else 
-				period = 180;
-			
-			generator = new GeneratorTask(this);
-			getServer().getScheduler().scheduleSyncRepeatingTask(this, generator, 0, 20*period);
+
+			if(getCfg("main").getBoolean("enabled") == true) {
+				startGen();
+			}
 			
 			CommandHandler cmd = new CommandHandler(this);
 			
@@ -121,6 +116,19 @@ public class ReactionRewards extends JavaPlugin {
 		return null;
 	}
 	
+	public void saveCfg(String c) {
+		switch(c) {
+			case "main":
+				main.saveConfig(); 
+			case "lang":
+				lang.saveConfig();
+			case "rewards":
+				rewards.saveConfig();
+			case "trivia":
+				trivia.saveConfig();
+		}
+	}
+	
 	public QuestionHandler getQuestionHandler() {
 		return question;
 	}
@@ -147,7 +155,8 @@ public class ReactionRewards extends JavaPlugin {
     //Get a string from lang.yml with the plugin prefix in front of it
     public String getLang(String path) {
     	if(getCfg("lang").contains(path) && getCfg("lang").getString(path) != "") {
-    		return parseString(getCfg("lang").getString(path));
+    		String s = getCfg("lang").getString(path);
+    		return parseString(s);
     	} else {
     		return null;
     	}
@@ -156,10 +165,37 @@ public class ReactionRewards extends JavaPlugin {
     //Format a string to have the plugin prefix in front of it
     public String parseString(String s) {
     	if(getCfg("lang").contains("Prefix") && getCfg("lang").getString("Prefix") != "") {
-    		return getCfg("lang").getString("Prefix") + s;
+    		String parsed = getCfg("lang").getString("Prefix") + s;
+    		parsed = parsed.replace("$", "§");
+    		return parsed;
     	} else {
+    		s = s.replace("$", "§");
     		return s;
     	}
+    }
+    
+    public static boolean isNumeric(String s) {  
+      try  
+      {  
+        @SuppressWarnings("unused")
+		int i = Integer.parseInt(s);  
+      }  
+      catch(NumberFormatException nfe)  
+      {  
+        return false;  
+      }  
+      return true;  
+    }
+    
+    public void startGen() {
+		int id;
+		generator = new GeneratorTask(this);
+		id = getServer().getScheduler().scheduleSyncDelayedTask(this, generator);
+		generator.setId(id);
+    }
+    
+    public void stopGen() {
+    	getServer().getScheduler().cancelTask(generator.taskId);
     }
     
 }

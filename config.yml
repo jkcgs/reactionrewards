@@ -1,3 +1,6 @@
+#If the reaction test is enabled or disabled. You can change this value with /rr start or /rr stop
+enabled: true
+
 #List of question types to choose from: trivia (Trivia questions), alpha (Random alhpanumeric string), math (Math questions). 
 #At least one type of question must be specified
 questionTypes:
@@ -12,7 +15,12 @@ alphaLength: 10
 mathMaxLength: 4
 
 #How often will a new question be generated in seconds (default: 300)
+#If you want a question to be generated at random periods use something like 300 - 600
+#This will generate the question at random period from 5 to 10 minutes
 generatorPeriod: 300
+
+#Mininum players online for the test to be triggered
+minPlayersOnline: 5
 
 #How many people to show in the leaderboards (default 5)
 leaderboardLimit: 5
