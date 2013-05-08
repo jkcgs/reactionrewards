@@ -1,6 +1,6 @@
 name: ReactionRewards
 main: ro.raizen.reactionrewards.ReactionRewards
-version: 1.0.7-makzk
+version: 1.0.8-makzk
 description: Reaction test and trivia with rewards !
 commands:
     reactionrewards:
@@ -29,4 +29,7 @@ permissions:
         default: op
     reactionrewards.reload:
         description: Can use /rr reload
+        default: op
+    reactionrewards.interval:
+        description: Can use /rr interval
         default: op

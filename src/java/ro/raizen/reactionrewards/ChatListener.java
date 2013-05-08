@@ -3,9 +3,9 @@ package ro.raizen.reactionrewards;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Arrays;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
     private ReactionRewards plugin;
