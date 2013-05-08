@@ -5,6 +5,7 @@ leaderboardEmpty: Leaderboard is empty
 configsReloaded: Configuration files have been reloaded
 broadcastTrivia: First player to correctly answer the question below wins $c%s$e
 broadcastAlpha: First player to type $c%s$e wins $c%s$e
+broadcastEquation: First player to find the value of X wins $c%s$e
 broadcastMath: First player to solve $c%s$e wins $c%s$e
 broadcastWin: Player $c%s$e won the reaction test in $c%s$e seconds
 sendWin: You were given $c%s$e

@@ -35,24 +35,26 @@ public class GeneratorTask implements Runnable {
 
             // Broadcast the question to the server
             switch (plugin.getQuestionHandler().getType()) {
-            case "trivia" :
-                plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastTrivia"), reward));
-                plugin.getServer().broadcastMessage(plugin.getQuestionHandler().getQuestion());
+                case "trivia" :
+                    plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastTrivia"), reward));
+                    plugin.getServer().broadcastMessage(plugin.getQuestionHandler().getQuestion());
+                    break;
 
-                break;
+                case "alpha" :
+                    plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastAlpha"),
+                            plugin.getQuestionHandler().getQuestion(), reward));
+                    break;
 
-            case "alpha" :
-                plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastAlpha"),
-                        plugin.getQuestionHandler().getQuestion(), reward));
-
-                break;
-
-            case "math" :
-                plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastMath"),
-                        plugin.getQuestionHandler().getQuestion(), reward));
-
-                break;
-            }
+                case "math" :
+                    plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastMath"),
+                            plugin.getQuestionHandler().getQuestion(), reward));
+                    break;
+                    
+                case "equation" :
+                    plugin.getServer().broadcastMessage(String.format(plugin.getLang("broadcastEquation"), reward));
+                    plugin.getServer().broadcastMessage(plugin.parseString(plugin.getQuestionHandler().getQuestion()));
+                    break;
+                }
         }
 
         int period = 300;

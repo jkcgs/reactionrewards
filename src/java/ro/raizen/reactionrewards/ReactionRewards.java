@@ -173,11 +173,11 @@ public class ReactionRewards extends JavaPlugin {
         if (getCfg("lang").contains("Prefix") && (getCfg("lang").getString("Prefix") != "")) {
             String parsed = getCfg("lang").getString("Prefix") + s;
 
-            parsed = parsed.replace("$", "�");
+            parsed = parsed.replace("$", "\u00a7");
 
             return parsed;
         } else {
-            s = s.replace("$", "�");
+            s = s.replace("$", "\u00a7");
 
             return s;
         }

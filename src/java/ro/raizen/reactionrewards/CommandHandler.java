@@ -100,8 +100,21 @@ public class CommandHandler implements CommandExecutor {
                 }
 
                 break;
-
+            case "getanswers" :
+                String[] answers = plugin.getQuestionHandler().getAnswers();
+                if (sender.hasPermission("reactionrewards.getanswers")) {
+                    if (answers != null){
+                        sender.sendMessage("Possible answers:");
+                        for (String i : answers){
+                            sender.sendMessage(i);
+                        }
+                    }
+                } else {
+                    sender.sendMessage("You don't have permission to do this");
+                }
+                break;
             default :
+                sender.sendMessage("ReactionRewards version " + plugin.getDescription().getVersion());
                 if (sender.hasPermission("reactionrewards.leaderboard")) {
                     sender.sendMessage(plugin.parseString("/rr leaderboard - See players who won the most times"));
                 }

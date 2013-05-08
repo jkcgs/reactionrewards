@@ -2,10 +2,10 @@ package ro.raizen.reactionrewards;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
     private ReactionRewards plugin;
@@ -90,17 +90,12 @@ public class ChatListener implements Listener {
 
     private boolean isCorrect(String a) {
         String[] answers = plugin.getQuestionHandler().getAnswers();
-
-        if (plugin.getQuestionHandler().getType().equalsIgnoreCase("trivia") && containsIgnoreCase(a, answers)) {
-            plugin.getQuestionHandler().setExpired();
-
-            return true;
+        if(answers==null || a==null){
+            return false;
         }
-
-        if (!plugin.getQuestionHandler().getType().equalsIgnoreCase("trivia")
-                && Arrays.asList(plugin.getQuestionHandler().getAnswers()).contains(a)) {
+        
+        if (containsIgnoreCase(a, answers) || Arrays.asList(answers).contains(a)) {
             plugin.getQuestionHandler().setExpired();
-
             return true;
         }
 
@@ -113,7 +108,6 @@ public class ChatListener implements Listener {
                 return true;
             }
         }
-
         return false;
     }
 }
