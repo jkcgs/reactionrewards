@@ -11,8 +11,13 @@ questionTypes:
 #Length of the alphanumeric string generated (default: 10)
 alphaLength: 10
 
-#Maximum length of the numbers generated for math questions (default: 4)
-mathMaxLength: 4
+#Math will generate numbers between this numbers (defualt: 10, 1000) 
+mathMinNumber: 10
+mathMaxNumber: 1000
+
+#Equations will generate numbers between this numbers (defualt: 10, 200) 
+eqMinNumber: 10
+eqMaxNumber: 200
 
 #How often will a new question be generated in seconds (default: 300)
 #If you want a question to be generated at random periods use something like 300 - 600

@@ -19,13 +19,15 @@ public class QuestionHandler {
     private boolean         expired;
     private Random          random;
     
-    private static int rand(int Min, int Max){ // number between this
+    private static int rand(int Min, int Max){ // random number between this
         return Min + (int)(Math.random() * ((Max - Min) + 1));
     }
-    private static int op(){ // 0 - 1
-        return rand(0,1);
+    private static int randSign(int Min, int Max){ // number between this, and random sign
+        int[] i = {1, -1};
+        return rand(Min, Max) * i[rand(0,1)];
     }
-    private static int pI(String var){
+    
+    private static int pI(String var){ // alias for parseInt
         return Integer.parseInt(var);
     }
 
@@ -36,7 +38,10 @@ public class QuestionHandler {
 
     public void generateQuestion() {
         int alphaLength   = 10,
-            mathMaxLength = 4;
+            mathMinNumber = 10,
+            mathMaxNumber = 1000,
+            eqMinNumber = 10,
+            eqMaxNumber = 200;
 
         if (plugin.getCfg("main").getStringList("questionTypes").size() > 0) {
             types = plugin.getCfg("main").getStringList("questionTypes").toArray(new String[0]);
@@ -46,8 +51,20 @@ public class QuestionHandler {
             alphaLength = plugin.getCfg("main").getInt("alphaLength");
         }
 
-        if (plugin.getCfg("main").getInt("mathMaxLength") > 0) {
-            mathMaxLength = plugin.getCfg("main").getInt("mathMaxLength");
+        if (plugin.getCfg("main").getInt("mathMinNumber") > 0) {
+            mathMinNumber = plugin.getCfg("main").getInt("mathMinNumber");
+        }
+        
+        if (plugin.getCfg("main").getInt("mathMaxNumber") > 0) {
+            mathMaxNumber = plugin.getCfg("main").getInt("mathMaxNumber");
+        }
+        
+        if (plugin.getCfg("main").getInt("eqqhMinNumber") > 0) {
+            eqMinNumber = plugin.getCfg("main").getInt("eqMinNumber");
+        }
+        
+        if (plugin.getCfg("main").getInt("eqMaxNumber") > 0) {
+            eqMaxNumber = plugin.getCfg("main").getInt("eqMaxNumber");
         }
 
         // get a random question type
@@ -63,11 +80,11 @@ public class QuestionHandler {
                 break;
 
             case "math" :
-                generateMathQuestion(mathMaxLength);
+                generateMathQuestion(mathMinNumber, mathMaxNumber);
                 break;
                 
             case "equation" :
-                generateEquation();
+                generateEquation(eqMinNumber, eqMaxNumber);
                 break;
         }
 
@@ -80,37 +97,27 @@ public class QuestionHandler {
     }
 
     private void generateRandomString(int length) {
-        String alphaNum     = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZ";
-        String randomString = "";
+        String alphaNum     = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZ",
+               randomString = "";
 
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++)
             randomString += alphaNum.charAt(random.nextInt(alphaNum.length()));
-        }
 
         question   = randomString;
         answers    = new String[1];
         answers[0] = question;
     }
 
-    private void generateMathQuestion(int length) {
-        int[] mult = {-1, 1}; // basic maths
+    private void generateMathQuestion(int min, int max) {
         int[] numbers = {0, 0};
-        int sign, op = op(); //0 - minus, 1 - plus
-        // save numbers to an array
-        for (int i=0; i<2; i++){
-            sign = mult[random.nextInt(2)]; // positive or negative?
-            numbers[i] = rand(1, (int)Math.pow(10,length+1)-1) * sign; // save number on array
-        }
-
-        if(op==0) {
-            question = String.format("%s - %s", numbers[0], numbers[1]);
-            answers = new String[1];
-            answers[0] = Integer.toString(numbers[0] - numbers[1]);
-        } else {
-            question = String.format("%s + %s", numbers[0], numbers[1]);
-            answers = new String[1];
-            answers[0] = Integer.toString(numbers[0] + numbers[1]);
-        }
+        for (int i=0; i<2; i++)
+            numbers[i] = randSign(min, max); // save number on array
+        
+        int op = rand(0,1); // operator, 0 = "-", 1 = "+"
+        
+        question = String.format("%s %s %s", numbers[0], (op==0)?"-":"+", numbers[1]); // 2nd parameter: operator
+        answers = new String[1];
+        answers[0] = Integer.toString(numbers[0] + numbers[1] * ((op==0)?-1:1) ); // inverse additive if minus
     }
 
     private void generateTriviaQuestion() {
@@ -120,24 +127,19 @@ public class QuestionHandler {
         answers  = plugin.getCfg("trivia").getStringList(question).toArray(new String[0]);
     }
     
-    private void generateEquation(){
-        int[] sign = {1, -1};
-        String[] operator = {"+", "-"}, pos = new String[5];
-        String[] operators = {operator[op()], "="};
+    private void generateEquation(int min, int max){
+        String[] pos = new String[5],
+                 operators = {(rand(0,1)==0)?"-":"+", "="};
         ArrayList<String> opList = new ArrayList(Arrays.asList(operators));
         Collections.shuffle(opList, new Random(System.nanoTime()));
         
-        // TODO: Make this configurable
-        int a = rand(50, 500) * sign[op()];
-        int b = rand(50, 500) * sign[op()];
-        
-        String[] vars = {a+"", b+"", "x"};
+        String[] vars = {randSign(min, max)+"", randSign(min, max)+"", "x"};
         ArrayList<String> varsList = new ArrayList(Arrays.asList(vars));
         Collections.shuffle(varsList, new Random(System.nanoTime()));
         
         for (int i = 0; i<5; i+=2){
             if(i>0){
-                // i-1, tomará 1 y 3
+                // i-1, will take 1 y 3
                 // 1=0, 3=1
                 int x = (i-1 == 1)? 0 : 1;
                 pos[i-1] = opList.get(x);
@@ -149,35 +151,34 @@ public class QuestionHandler {
         for(int i = 0; i<5; i++)
             question = question + pos[i] + " ";
         
-        // 0, 2, 4 = var,const; 1, 3 = operador o "="
-        int answer = 0;
-        
-        int d,e,f; // la comprobación de índices dependerá de la posición de 'x'
+        // 0, 2, 4 = var,const; 1, 3 = operator or "="
+        int answer,
+            d,e,f; // la comprobación de índices dependerá de la posición de 'x'
         
         // para formatos: a +/- b = x, x = a +/- b
-        if ((pos[1] == "=" && pos[0] == "x") || (pos[3] == "=" && pos[4] == "x")){
-            if (pos[0] == "x") { // x está al principio?
+        if ((pos[1].equals("=") && pos[0].equals("x")) || (pos[3].equals("=") && pos[4].equals("x"))){
+            if (pos[0].equals("x")) { // x is at beggining?
                 d=3; e=2; f=4; 
-            } else { // o al final?
+            } else { // or at the end?
                 d=1; e=0; f=2; 
             }
-            answer = (pos[d] == "+") ? pI(pos[e]) + pI(pos[f]) : pI(pos[e]) - pI(pos[f]);
+            answer = (pos[d].equals("+")) ? pI(pos[e]) + pI(pos[f]) : pI(pos[e]) - pI(pos[f]);
         } else {
-            if (pos[1] == "=") { // el signo igual está a la izquierda
+            if (pos[1].equals("=")) { // the "=" sign is to the left...
                 d=4;e=0;f=2;
-            } else { // o a la derecha?
+            } else { // or to the right?
                 d=0;e=4;f=0;
             }
-            int constant = (pos[2] == "x") ? pI(pos[d]) : pI(pos[2]);
+            int constant = (pos[2].equals("x")) ? pI(pos[d]) : pI(pos[2]);
             
             // y si al lado izquierdo de la constante, teniendo x al principio, y el "=" a la derecha? entonces es su inverso positivo
-            if (pos[0+f] == "x" && pos[1+f] == "-")
+            if (pos[0+f].equals("x") && pos[1+f].equals("-"))
                 constant = constant * -1;
             
             answer = pI(pos[e]) + constant * -1;
             
             // y si al lado izquierdo de la x hay un "-"? significa que la respuesta es su inverso aditivo
-            if (pos[1+f] == "-" && pos[2+f] == "x")
+            if (pos[1+f].equals("-") && pos[2+f].equals("x"))
                 answer = answer * -1;
         }
         answers = new String[1];

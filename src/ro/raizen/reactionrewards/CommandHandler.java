@@ -108,6 +108,7 @@ public class CommandHandler implements CommandExecutor {
                             sender.sendMessage(plugin.getLang("intNotPositive"));
                         } else{
                             plugin.getCfg("main").set("generatorPeriod", interval);
+                            plugin.saveConfig();
                             sender.sendMessage(plugin.getLang("intText") + interval);
                             if (plugin.getCfg("main").getBoolean("enabled") == false) {
                                 sender.sendMessage(plugin.getLang("doItEffective"));
