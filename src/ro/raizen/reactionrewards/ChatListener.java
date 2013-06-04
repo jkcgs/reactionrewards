@@ -93,8 +93,12 @@ public class ChatListener implements Listener {
         if(answers==null || a==null){
             return false;
         }
+        String type = plugin.getQuestionHandler().getType();
         
-        if (containsIgnoreCase(a, answers) || Arrays.asList(answers).contains(a)) {
+        if (!type.equals("alpha") && (containsIgnoreCase(a, answers) || Arrays.asList(answers).contains(a))) {
+            plugin.getQuestionHandler().setExpired();
+            return true;
+        } else if(type.equals("alpha") && a.equals(answers[0])) {
             plugin.getQuestionHandler().setExpired();
             return true;
         }
