@@ -148,8 +148,13 @@ public class QuestionHandler {
         }
         
         question = "";
-        for(int i = 0; i<5; i++)
-            question = question + pos[i] + " ";
+        for(int i = 0; i<5; i++){
+            if(i == 4 && pos[3].equals("-") && pI(pos[4]) < 0 // ading () to "a - (-b)
+                  || i == 2 && pos[1].equals("-") && pI(pos[2]) < 0)
+                question += "(" + pos[i] + ") ";
+            else
+                question += pos[i] + " ";
+        }
         
         // 0, 2, 4 = var,const; 1, 3 = operator or "="
         int answer,
@@ -165,9 +170,9 @@ public class QuestionHandler {
             answer = (pos[d].equals("+")) ? pI(pos[e]) + pI(pos[f]) : pI(pos[e]) - pI(pos[f]);
         } else {
             if (pos[1].equals("=")) { // the "=" sign is to the left...
-                d=4;e=0;f=2;
+                d=4; e=0; f=2;
             } else { // or to the right?
-                d=0;e=4;f=0;
+                d=0; e=4; f=0;
             }
             int constant = (pos[2].equals("x")) ? pI(pos[d]) : pI(pos[2]);
             
