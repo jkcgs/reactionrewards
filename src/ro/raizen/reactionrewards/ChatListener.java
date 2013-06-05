@@ -95,10 +95,11 @@ public class ChatListener implements Listener {
         }
         String type = plugin.getQuestionHandler().getType();
         
-        if (!type.equals("alpha") && (containsIgnoreCase(a, answers) || Arrays.asList(answers).contains(a))) {
-            plugin.getQuestionHandler().setExpired();
-            return true;
-        } else if(type.equals("alpha") && a.equals(answers[0])) {
+        if (containsIgnoreCase(a, answers) || Arrays.asList(answers).contains(a)) {
+            if(type.equals("alpha") // if not Case-Insensitive
+                    && !plugin.getCfg("config").getBoolean("alphaCaseInsensitive") 
+                    && !a.equals(answers[0]))
+                return false;
             plugin.getQuestionHandler().setExpired();
             return true;
         }

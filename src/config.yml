@@ -29,3 +29,6 @@ minPlayersOnline: 5
 
 #How many people to show in the leaderboards (default 5)
 leaderboardLimit: 5
+
+#Case Insensitive for alpha questions
+alphaCaseInsensitive: true

@@ -1,6 +1,6 @@
 name: ReactionRewards
 main: ro.raizen.reactionrewards.ReactionRewards
-version: 1.0.9-makzk
+version: 1.0.10-makzk
 description: Reaction test and trivia with rewards !
 commands:
     reactionrewards:
