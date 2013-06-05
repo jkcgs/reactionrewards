@@ -126,7 +126,7 @@ public class CommandHandler implements CommandExecutor {
 
             break;
         default :
-            sender.sendMessage(plugin.parseString("Version " + plugin.getDescription().getVersion()));
+            sender.sendMessage(plugin.parseString("By raizenpk, version " + plugin.getDescription().getVersion()));
             if (sender.hasPermission("reactionrewards.leaderboard")) {
                 sender.sendMessage(plugin.getLang("infoLeaderboard"));
             }
