@@ -149,10 +149,11 @@ public class QuestionHandler {
         
         question = "";
         for(int i = 0; i<5; i++){
-            if(i == 4 && pos[3].equals("-") && pI(pos[4]) < 0 // ading () to "a - (-b)
-                  || i == 2 && pos[1].equals("-") && pI(pos[2]) < 0)
-                question += "(" + pos[i] + ") ";
-            else
+        	if((i == 4 && isInteger(pos[4])) || (i == 2 && isInteger(pos[2]))){
+	            if(i == 4 && pos[3].equals("-") && pI(pos[4]) < 0 // ading () to "a - (-b)
+	                  || i == 2 && pos[1].equals("-") && pI(pos[2]) < 0)
+	                question += "(" + pos[i] + ") ";
+        	} else
                 question += pos[i] + " ";
         }
         
@@ -244,5 +245,14 @@ public class QuestionHandler {
 
     public long getTime() {
         return timer.getTime();
+    }
+    public static boolean isInteger(String s) {
+        try { 
+            Integer.parseInt(s); 
+        } catch(NumberFormatException e) { 
+            return false; 
+        }
+        // only got here if we didn't return false
+        return true;
     }
 }
