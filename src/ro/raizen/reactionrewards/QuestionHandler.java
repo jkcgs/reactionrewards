@@ -130,11 +130,11 @@ public class QuestionHandler {
     private void generateEquation(int min, int max){
         String[] pos = new String[5],
                  operators = {(rand(0,1)==0)?"-":"+", "="};
-        ArrayList<String> opList = new ArrayList(Arrays.asList(operators));
+        ArrayList<String> opList = new ArrayList<String>(Arrays.asList(operators));
         Collections.shuffle(opList, new Random(System.nanoTime()));
         
         String[] vars = {randSign(min, max)+"", randSign(min, max)+"", "x"};
-        ArrayList<String> varsList = new ArrayList(Arrays.asList(vars));
+        ArrayList<String> varsList = new ArrayList<String>(Arrays.asList(vars));
         Collections.shuffle(varsList, new Random(System.nanoTime()));
         
         for (int i = 0; i<5; i+=2){
