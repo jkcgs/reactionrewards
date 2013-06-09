@@ -97,7 +97,7 @@ public class ChatListener implements Listener {
         
         if (containsIgnoreCase(a, answers) || Arrays.asList(answers).contains(a)) {
             if(type.equals("alpha") // if not Case-Insensitive
-                    && !plugin.getCfg("config").getBoolean("alphaCaseInsensitive") 
+                    && !plugin.getConfig().getBoolean("alphaCaseInsensitive")
                     && !a.equals(answers[0]))
                 return false;
             plugin.getQuestionHandler().setExpired();
