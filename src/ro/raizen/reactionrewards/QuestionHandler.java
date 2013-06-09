@@ -19,18 +19,6 @@ public class QuestionHandler {
     private boolean         expired;
     private Random          random;
     
-    private static int rand(int Min, int Max){ // random number between this
-        return Min + (int)(Math.random() * ((Max - Min) + 1));
-    }
-    private static int randSign(int Min, int Max){ // number between this, and random sign
-        int[] i = {1, -1};
-        return rand(Min, Max) * i[rand(0,1)];
-    }
-    
-    private static int pI(String var){ // alias for parseInt
-        return Integer.parseInt(var);
-    }
-
     public QuestionHandler(ReactionRewards plugin) {
         this.plugin = plugin;
         random      = new Random();
@@ -115,7 +103,15 @@ public class QuestionHandler {
         
         int op = rand(0,1); // operator, 0 = "-", 1 = "+"
         
-        question = String.format("%s %s %s", numbers[0], (op==0)?"-":"+", numbers[1]); // 2nd parameter: operator
+        // if format is a - -b, transform into a - (-b)
+        String j = numbers[1] + "";
+        if(numbers[1] < 0 && op == 0)
+        	j = "(" + j + ")";
+        
+        question = String.format("%s %s %s", 
+        		numbers[0], 
+        		(op==0)?"-":"+", // operator
+        		j); 
         answers = new String[1];
         answers[0] = Integer.toString(numbers[0] + numbers[1] * ((op==0)?-1:1) ); // inverse additive if minus
     }
@@ -150,7 +146,7 @@ public class QuestionHandler {
         question = "";
         for(int i = 0; i<5; i++){
         	if((i == 4 && isInteger(pos[4])) || (i == 2 && isInteger(pos[2]))){
-	            if(i == 4 && pos[3].equals("-") && pI(pos[4]) < 0 // ading () to "a - (-b)
+	            if(i == 4 && pos[3].equals("-") && pI(pos[4]) < 0 // adding () to "a - (-b)
 	                  || i == 2 && pos[1].equals("-") && pI(pos[2]) < 0)
 	                question += "(" + pos[i] + ") ";
 	            else
@@ -161,11 +157,11 @@ public class QuestionHandler {
         
         // 0, 2, 4 = var,const; 1, 3 = operator or "="
         int answer,
-            d,e,f; // la comprobación de índices dependerá de la posición de 'x'
+            d,e,f; // index checking will depend on 'x' position
         
         // para formatos: a +/- b = x, x = a +/- b
         if ((pos[1].equals("=") && pos[0].equals("x")) || (pos[3].equals("=") && pos[4].equals("x"))){
-            if (pos[0].equals("x")) { // x is at beggining?
+            if (pos[0].equals("x")) { // x is at beginning?
                 d=3; e=2; f=4; 
             } else { // or at the end?
                 d=1; e=0; f=2; 
@@ -248,6 +244,7 @@ public class QuestionHandler {
     public long getTime() {
         return timer.getTime();
     }
+    
     public static boolean isInteger(String s) {
         try { 
             Integer.parseInt(s); 
@@ -256,5 +253,17 @@ public class QuestionHandler {
         }
         // only got here if we didn't return false
         return true;
+    }
+
+    private static int rand(int Min, int Max){ // random number between this
+        return Min + (int)(Math.random() * ((Max - Min) + 1));
+    }
+    private static int randSign(int Min, int Max){ // number between this, and random sign
+        int[] i = {1, -1};
+        return rand(Min, Max) * i[rand(0,1)];
+    }
+    
+    private static int pI(String var){ // alias for parseInt
+        return Integer.parseInt(var);
     }
 }
