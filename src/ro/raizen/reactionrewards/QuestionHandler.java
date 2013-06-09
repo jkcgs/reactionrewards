@@ -153,6 +153,8 @@ public class QuestionHandler {
 	            if(i == 4 && pos[3].equals("-") && pI(pos[4]) < 0 // ading () to "a - (-b)
 	                  || i == 2 && pos[1].equals("-") && pI(pos[2]) < 0)
 	                question += "(" + pos[i] + ") ";
+	            else
+	            	question += pos[i] + " ";
         	} else
                 question += pos[i] + " ";
         }
