@@ -46,13 +46,6 @@ public class ReactionRewards extends JavaPlugin {
             getPluginLoader().disablePlugin(this);
         }
 
-        // Check if SQLibrary is installed
-        if (getServer().getPluginManager().getPlugin("SQLibrary") == null) {
-            log.severe(String.format("[%s] Dependency SQLibrary not found", getDescription().getName()));
-            hasDependencies = false;
-            getPluginLoader().disablePlugin(this);
-        }
-
         if (hasDependencies) {
             db = new Database(this);
             setupEconomy();
