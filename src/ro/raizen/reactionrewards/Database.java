@@ -105,6 +105,6 @@ public class Database {
     public void Close() {
         try {
 			sql.close();
-		} catch (SQLException e) {}
+		} catch (Exception e) {}
     }
 }
