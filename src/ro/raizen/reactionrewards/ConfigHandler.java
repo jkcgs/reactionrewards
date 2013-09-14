@@ -54,7 +54,7 @@ public class ConfigHandler {
             try {
                 getConfig().save(configFile);
             } catch (IOException e) {
-                plugin.log.severe("Could not save config to " + configFile);
+                plugin.getLogger().severe("Could not save config to " + configFile);
             }
         }
     }

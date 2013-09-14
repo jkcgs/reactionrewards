@@ -38,7 +38,7 @@ public class CommandHandler implements CommandExecutor {
                             count++;
                         }
                     } catch (SQLException e) {
-                        plugin.log.info(plugin.parseString(e.getMessage()));
+                        plugin.getLogger().info(plugin.parseString(e.getMessage()));
                     }
                 } else {
                     sender.sendMessage(plugin.getLang("leaderboardEmpty"));

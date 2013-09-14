@@ -1,7 +1,5 @@
 package ro.raizen.reactionrewards;
 
-import java.util.logging.Logger;
-
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.ChatColor;
@@ -13,14 +11,11 @@ public class ReactionRewards extends JavaPlugin {
 
     // Vault Economy
     private static Economy econ = null;
-    public Logger log = getLogger();
+    
     private ChatListener cl;
 
     // Configs
-    private ConfigHandler main;
-    private ConfigHandler lang;
-    private ConfigHandler rewards;
-    private ConfigHandler trivia;
+    private ConfigHandler main, lang, rewards, trivia;
 
     // Question Handler
     private QuestionHandler question;
@@ -41,7 +36,7 @@ public class ReactionRewards extends JavaPlugin {
 
         // Check if Vault is installed
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            log.severe("Dependency Vault not found");
+            getLogger().severe("Dependency Vault not found");
             hasDependencies = false;
             getPluginLoader().disablePlugin(this);
         }

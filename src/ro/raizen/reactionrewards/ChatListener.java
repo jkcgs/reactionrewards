@@ -44,7 +44,7 @@ public class ChatListener implements Listener {
                         int    itemId;
                         short  damageValue;
 
-                        plugin.log.info(item);
+                        plugin.getLogger().info(item);
 
                         // check if the item id has damage value
                         if (item.contains(":")) {
