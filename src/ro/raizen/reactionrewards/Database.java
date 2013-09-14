@@ -18,11 +18,10 @@ public class Database {
     }
 
     public void Connect() {
-        // sql = new SQLite(plugin.log, "ReactionRewards", plugin.getDataFolder().getAbsolutePath(), "leaderboard");
-
     	try {
-			con = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().getAbsolutePath() + "leaderboard.db");
-            sql = con.createStatement();
+    		Class.forName("org.sqlite.JDBC");
+			con = DriverManager.getConnection("jdbc:sqlite:leaderboard.db");
+			sql = con.createStatement();
 		} catch (Exception e) {
 			// TODO: Traducible
             plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
