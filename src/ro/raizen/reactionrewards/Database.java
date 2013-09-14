@@ -98,11 +98,7 @@ public class Database {
             sql.executeUpdate("SELECT COUNT(*) as CNT FROM leaderboard WHERE playername = '" + player + "';");
             ResultSet result = sql.getResultSet();
             
-            if (result.getInt("cnt") > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return (result.getInt("cnt") > 0);
         } catch (SQLException e) {
             plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
 
