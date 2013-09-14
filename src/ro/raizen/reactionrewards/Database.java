@@ -20,12 +20,26 @@ public class Database {
     public void Connect() {
     	try {
     		Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:leaderboard.db");
+			con = DriverManager.getConnection("jdbc:sqlite:"+ plugin.getDataFolder().getAbsolutePath() + "/leaderboard.db");
 		} catch (Exception e) {
 			// TODO: Traducible
             plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
             plugin.getPluginLoader().disablePlugin(plugin);
 		}
+    }
+
+    private void CheckTables() {
+        try {
+			sql = con.createStatement();
+			sql.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='leaderboard';");
+			if(sql.getResultSet().first()) {
+				sql = con.createStatement();
+	            sql.executeUpdate("CREATE TABLE leaderboard (id INTEGER PRIMARY KEY AUTOINCREMENT, playername VARCHAR(50), wins INT DEFAULT '0');");
+	            plugin.log.info("Table 'leaderboard' has been created.");
+			}
+        } catch (SQLException e) {
+            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
+        }
     }
 
     public int getWins(String player) {
@@ -36,7 +50,7 @@ public class Database {
             
             return result.getInt("wins");
         } catch (SQLException e) {
-            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
+            plugin.log.info(e.getMessage());
 
             return 0;
         }
@@ -50,7 +64,7 @@ public class Database {
             
             return result;
         } catch (SQLException e) {
-            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
+            plugin.log.info(e.getMessage());
 
             return null;
         }
@@ -64,7 +78,7 @@ public class Database {
             return (result.getInt("cnt") > 0) ? false: true;
             
         } catch (SQLException e) {
-            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
+            plugin.log.info(e.getMessage());
 
             return true;
         }
@@ -86,7 +100,7 @@ public class Database {
                 return false;
             }
         } catch (SQLException e) {
-            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
+            plugin.log.info(e.getMessage());
 
             return false;
         }
@@ -100,7 +114,7 @@ public class Database {
             
             return (result.getInt("cnt") > 0);
         } catch (SQLException e) {
-            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
+            plugin.log.info(e.getMessage());
 
             return false;
         }
@@ -109,24 +123,13 @@ public class Database {
     public boolean insertPlayer(String player) {
         try {
 			sql = con.createStatement();
-            sql.executeUpdate("INSERT INTO leaderboard(playername, wins) VALUES ('" + player + "', '1');");
+            sql.execute("INSERT INTO leaderboard(playername, wins) VALUES ('" + player + "', '1');");
 
             return true;
         } catch (SQLException e) {
-            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
+            plugin.log.info(e.getMessage());
 
             return false;
-        }
-    }
-
-    private void CheckTables() {
-        try {
-			sql = con.createStatement();
-            sql.executeUpdate("CREATE TABLE IF NOT EXISTS leaderboard (id INTEGER PRIMARY KEY AUTOINCREMENT, playername VARCHAR(50), wins INT DEFAULT '0');");
-            plugin.log.info(String.format("[%s] Table 'leaderboard' has been created.",
-                                          plugin.getDescription().getName()));
-        } catch (SQLException e) {
-            plugin.log.info(String.format("[%s] %s", plugin.getDescription().getName(), e.getMessage()));
         }
     }
 

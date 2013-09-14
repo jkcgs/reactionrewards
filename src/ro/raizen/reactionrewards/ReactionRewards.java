@@ -1,19 +1,19 @@
 package ro.raizen.reactionrewards;
 
+import java.util.logging.Logger;
+
 import net.milkbowl.vault.economy.Economy;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.ChatColor; 
-
-import java.util.logging.Logger;
 
 public class ReactionRewards extends JavaPlugin {
 
     // Vault Economy
     private static Economy econ = null;
-    public Logger log = Logger.getLogger("Minecraft");
+    public Logger log = getLogger();
     private ChatListener cl;
 
     // Configs
@@ -41,7 +41,7 @@ public class ReactionRewards extends JavaPlugin {
 
         // Check if Vault is installed
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            log.severe(String.format("[%s] Dependency Vault not found", getDescription().getName()));
+            log.severe("Dependency Vault not found");
             hasDependencies = false;
             getPluginLoader().disablePlugin(this);
         }
