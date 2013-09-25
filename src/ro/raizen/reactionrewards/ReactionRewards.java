@@ -44,21 +44,17 @@ public class ReactionRewards extends JavaPlugin {
         if (hasDependencies) {
             db = new Database(this);
             setupEconomy();
+            initConfigs();
 
             // ChatListener checks for the correct answer
             cl = new ChatListener(this);
             getServer().getPluginManager().registerEvents(cl, this);
-            initConfigs();
             question = new QuestionHandler(this);
 
-            if (getCfg("main").getBoolean("enabled") == true) {
+            if (getCfg("main").getBoolean("enabled") == true)
                 startGen();
-            }
 
-            CommandHandler cmd = new CommandHandler(this);
-
-            getCommand("reactionrewards").setExecutor(cmd);
-            getCommand("rr").setExecutor(cmd);
+            getCommand("reactionrewards").setExecutor(new CommandHandler(this));
         }
     }
 
@@ -128,12 +124,10 @@ public class ReactionRewards extends JavaPlugin {
     private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
 
-        if (rsp == null) {
+        if (rsp == null)
             return false;
-        }
 
         econ = rsp.getProvider();
-
         return econ != null;
     }
 
@@ -166,19 +160,16 @@ public class ReactionRewards extends JavaPlugin {
 
     public static boolean isNumeric(String s) {
         try {
-            @SuppressWarnings("unused") int i = Integer.parseInt(s);
+            Integer.parseInt(s);
+            return true;
         } catch (NumberFormatException nfe) {
             return false;
         }
-
-        return true;
     }
 
     public void startGen() {
-        int id;
-
         generator = new GeneratorTask(this);
-        id = getServer().getScheduler().scheduleSyncDelayedTask(this, generator);
+        int id = getServer().getScheduler().scheduleSyncDelayedTask(this, generator);
         generator.setId(id);
     }
 

@@ -79,9 +79,11 @@ public class ChatListener implements Listener {
 
                     // Add/update player entry in db with +1 wins
                     if (plugin.getDb().isSet(e.getPlayer().getName())) {
-                        plugin.getDb().updatePlayer(e.getPlayer().getName());
+                        if(!plugin.getDb().updatePlayer(e.getPlayer().getName()))
+                        	plugin.getLogger().severe("Could not update database");
                     } else {
-                        plugin.getDb().insertPlayer(e.getPlayer().getName());
+                        if(!plugin.getDb().insertPlayer(e.getPlayer().getName()))
+                        	plugin.getLogger().severe("Could not update database");
                     }
                 }
             }

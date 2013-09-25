@@ -25,18 +25,20 @@ public class CommandHandler implements CommandExecutor {
                     limit = plugin.getCfg("main").getInt("leaderboardLimit");
                 }
 
-                if (!plugin.getDb().isEmpty()) {
+                if (plugin.getDb() != null) {
                     ResultSet leaders = plugin.getDb().getTop(limit);
-                    int count = 1;
+                    int count = 0;
 
                     try {
                         while (leaders.next()) {
+                            count++;
                             sender.sendMessage(
                                 String.format(
                                     plugin.getCfg("lang").getString("leaderboardTemplate"), count,
                                     leaders.getString("playername"), leaders.getInt("wins")));
-                            count++;
                         }
+                        if (count == 0)
+                        	sender.sendMessage(plugin.getLang("leaderboardEmpty"));
                     } catch (SQLException e) {
                         plugin.getLogger().info(plugin.parseString(e.getMessage()));
                     }

@@ -1,15 +1,11 @@
 package ro.raizen.reactionrewards;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Database {
-    public ReactionRewards plugin;
-    private Connection con;
-    private PreparedStatement sql;
+    private ReactionRewards plugin;
+    private SQLiConnection db;
 
     public Database(ReactionRewards plugin) {
         this.plugin = plugin;
@@ -17,10 +13,10 @@ public class Database {
         this.CheckTables();
     }
 
-    public void Connect() {
+    private void Connect() {
     	try {
-    		Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:"+ plugin.getDataFolder().getAbsolutePath() + "/leaderboard.db");
+            db = new SQLiConnection(plugin.getDataFolder().getAbsolutePath().replace("\\", "/") + "/leaderboard.db");
+            db.Connect();
 		} catch (Exception e) {
             plugin.getLogger().info(e.getMessage());
             plugin.getPluginLoader().disablePlugin(plugin);
@@ -29,8 +25,8 @@ public class Database {
 
     private void CheckTables() {
         try {
-			if(!Query("SELECT name FROM sqlite_master WHERE type='table' AND name='leaderboard';").next()) {
-				Query("CREATE TABLE leaderboard (id INTEGER PRIMARY KEY AUTOINCREMENT, playername VARCHAR(50), wins INT DEFAULT '0');");
+        	if(!db.TableExists("leaderboard")) {
+				db.Update("CREATE TABLE leaderboard (id INTEGER PRIMARY KEY AUTOINCREMENT, playername VARCHAR(50), wins INT DEFAULT '0');");
 				plugin.getLogger().info("Table 'leaderboard' has been created.");
 			}
         } catch (Exception e) {}
@@ -38,7 +34,7 @@ public class Database {
 
     public int getWins(String player) {
         try {
-            return Query("SELECT wins FROM leaderboard WHERE playername = '" + player + "';").getInt("wins");
+            return db.Query("SELECT wins FROM leaderboard WHERE playername = '" + player + "';").getInt("wins");
         } catch (Exception e) {
             return 0;
         }
@@ -46,25 +42,17 @@ public class Database {
 
     public ResultSet getTop(int limit) {
         try {
-            return Query("SELECT * FROM leaderboard ORDER BY wins DESC LIMIT " + limit + ";");
+            return db.Query("SELECT * FROM leaderboard ORDER BY wins DESC LIMIT " + limit + ";");
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    public boolean isEmpty() {
-        try {
-            return (Query("SELECT COUNT(*) AS cnt FROM leaderboard;").getInt("cnt") > 0) ? false: true;
-        } catch (Exception e) {
-            return true;
         }
     }
 
     public boolean updatePlayer(String player) {
         try {
             if (isSet(player)) {
-                int wins = Query("SELECT wins FROM leaderboard WHERE playername = '" + player + "';").getInt("wins") + 1;
-    			Query("UPDATE leaderboard SET wins = '" + wins + "' WHERE playername = '" + player + "';");
+                int wins = db.Query("SELECT wins FROM leaderboard WHERE playername = '" + player + "';").getInt("wins") + 1;
+    			db.Update("UPDATE leaderboard SET wins = '" + wins + "' WHERE playername = '" + player + "';");
                 return true;
             } else {
                 return false;
@@ -76,35 +64,22 @@ public class Database {
 
     public boolean isSet(String player) {
         try {
-            return (Query("SELECT COUNT(*) as CNT FROM leaderboard WHERE playername = '" + player + "';").getInt("cnt") > 0);
-        } catch (SQLException e) {
+            return db.Query("SELECT * FROM leaderboard WHERE playername = '" + player + "';").next();
+        } catch (Exception e) {
             return false;
         }
     }
 
     public boolean insertPlayer(String player) {
         try {
-			Query("INSERT INTO leaderboard(playername, wins) VALUES ('" + player + "', '1');");
+			db.Update("INSERT INTO leaderboard(playername, wins) VALUES ('" + player + "', '1');");
             return true;
         } catch (Exception e) {
             return false;
         }
     }
     
-    public ResultSet Query(String sql) {
-    	PreparedStatement stmt;
-		try {
-			stmt = con.prepareStatement(sql);
-			return stmt.executeQuery();
-		} catch (SQLException e) {
-			plugin.getLogger().info(e.getMessage());
-			return null;
-		}
-    }
-
     public void Close() {
-        try {
-			sql.close();
-		} catch (Exception e) {}
+    	db.Close();
     }
 }
